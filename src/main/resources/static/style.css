@@ -3,6 +3,9 @@ body {
     background: #f7f7f7;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 header {
     background: #25d366;
@@ -13,7 +16,88 @@ header {
 main {
     padding: 2rem;
     text-align: center;
+    flex: 1;
 }
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+}
+
+.product-list li {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 1.5rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: box-shadow 0.3s;
+    min-height: 350px;
+    position: relative;
+}
+
+.product-btn {
+    margin-top: auto;
+    align-self: stretch;
+    text-align: center;
+    background: #25d366;
+    color: white;
+    padding: 0.75rem 0;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 1px 4px rgba(37,211,102,0.15);
+    transition: background 0.3s, box-shadow 0.3s;
+    display: block;
+}
+.product-btn:hover {
+    background: #128c7e;
+    box-shadow: 0 2px 8px rgba(18,140,126,0.15);
+}
+
+
+.product-img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    align-self: center;
+}
+
+.product-list li:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.product-list h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.3rem;
+    color: #222;
+}
+
+.product-list p {
+    margin: 0 0 1rem 0;
+    color: #555;
+}
+
+.product-list span {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #25d366;
+    margin-bottom: 1rem;
+}
+
+.whatsapp-btn {
+    align-self: center;
+}
+
 .whatsapp-btn {
     display: inline-block;
     background: #25d366;
@@ -33,7 +117,6 @@ footer {
     color: #fff;
     text-align: center;
     padding: 1rem;
-    position: fixed;
     width: 100%;
-    bottom: 0;
+    margin-top: auto;
 }
