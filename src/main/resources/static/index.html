@@ -17,37 +17,37 @@
             </ul>
         </div>
     </nav>
-    <header class="hero-header">
-        <h1>Discover Personalized Gifts</h1>
-        <p class="tagline">Handcrafted items made just for you. Order instantly via WhatsApp.</p>
-    </header>
-    <main>
-            <p>Discover products and services. Connect with businesses on WhatsApp!</p>
-            <h2>Our Products</h2>
-            <ul class="product-list">
-                    <li>
-                            <img src="gift.jpg" alt="Customised Gift 1" class="product-img">
-                        <h3>Product 1</h3>
-                        <p>High-quality item for your needs.</p>
-                        <span>₹499</span>
-                        <a href="#" class="whatsapp-btn product-btn">Buy on WhatsApp</a>
-                    </li>
-                    <li>
-                            <img src="gift.jpg" alt="Customised Gift 2" class="product-img">
-                        <h3>Product 2</h3>
-                        <p>Affordable and reliable.</p>
-                        <span>₹299</span>
-                        <a href="#" class="whatsapp-btn product-btn">Buy on WhatsApp</a>
-                    </li>
-                    <li>
-                            <img src="gift.jpg" alt="Customised Gift 3" class="product-img">
-                        <h3>Product 3</h3>
-                        <p>Best seller in our catalogue.</p>
-                        <span>₹799</span>
-                        <a href="#" class="whatsapp-btn product-btn">Buy on WhatsApp</a>
-                    </li>
-            </ul>
-            <!-- Removed global WhatsApp button, now each product has its own -->
+    <main class="catalogue-only" id="products">
+        <h1 class="catalogue-title">Our Products</h1>
+        <ul class="catalog-grid" aria-label="Product list">
+            <li class="catalog-card" data-product-id="1">
+                <div class="media"><img src="gift.jpg" alt="Customised Gift 1" loading="lazy"></div>
+                <div class="info">
+                    <h2 class="name">Product 1</h2>
+                    <p class="desc">High-quality item for your needs with premium finish.</p>
+                    <span class="price" aria-label="Price 499 Rupees">₹499</span>
+                    <a href="#" class="whatsapp-btn action" aria-label="Buy Product 1 on WhatsApp">Buy on WhatsApp</a>
+                </div>
+            </li>
+            <li class="catalog-card" data-product-id="2">
+                <div class="media"><img src="gift.jpg" alt="Customised Gift 2" loading="lazy"></div>
+                <div class="info">
+                    <h2 class="name">Product 2</h2>
+                    <p class="desc">Affordable, reliable and perfect for everyday gifting.</p>
+                    <span class="price" aria-label="Price 299 Rupees">₹299</span>
+                    <a href="#" class="whatsapp-btn action" aria-label="Buy Product 2 on WhatsApp">Buy on WhatsApp</a>
+                </div>
+            </li>
+            <li class="catalog-card" data-product-id="3">
+                <div class="media"><img src="gift.jpg" alt="Customised Gift 3" loading="lazy"></div>
+                <div class="info">
+                    <h2 class="name">Product 3</h2>
+                    <p class="desc">Our best seller—elegant, durable and custom-ready.</p>
+                    <span class="price" aria-label="Price 799 Rupees">₹799</span>
+                    <a href="#" class="whatsapp-btn action" aria-label="Buy Product 3 on WhatsApp">Buy on WhatsApp</a>
+                </div>
+            </li>
+        </ul>
     </main>
     <footer>
         <p>&copy; 2025 WhatsApp Business Catalogue</p>

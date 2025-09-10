@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+        body{margin:0;font-family:Arial,sans-serif;background:#f5f7f6;}
+        .admin-nav{background:#12302a;color:#fff;padding:.9rem 1.2rem;display:flex;align-items:center;justify-content:space-between;}
+        .admin-nav h1{margin:0;font-size:1.1rem;letter-spacing:.5px;}
+        .admin-nav a{color:#25d366;text-decoration:none;font-weight:600;margin-left:1rem;}
+        .container{max-width:1100px;margin:2.2rem auto;padding:0 1.25rem;}
+        .grid{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));}
+        .card{background:#fff;padding:1.4rem 1.2rem;border-radius:16px;box-shadow:0 4px 18px -8px rgba(0,0,0,.18);position:relative;display:flex;flex-direction:column;}
+        .card h2{margin:.15rem 0 .65rem;font-size:1rem;letter-spacing:.4px;color:#12302a;}
+        .card p{margin:0 0 1rem;color:#45665b;font-size:.85rem;line-height:1.4;}
+        .logout{background:#25d366;color:#0f2f24;padding:.55rem 1rem;border-radius:20px;font-size:.8rem;font-weight:700;text-decoration:none;}
+        .logout:hover{background:#1fb45a;color:#fff;}
+        .muted{color:#607a72;font-size:.7rem;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:.4rem;}
+    </style>
+</head>
+<body>
+<nav class="admin-nav">
+    <h1>Admin Dashboard</h1>
+    <div>
+        <a href="/" target="_blank">View Site</a>
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+</nav>
+<div class="container">
+    <div class="grid">
+        <div class="card">
+            <div class="muted">Products</div>
+            <h2>Manage Catalogue</h2>
+            <p>Future: add, edit, archive products. (Placeholder)</p>
+        </div>
+        <div class="card">
+            <div class="muted">Orders</div>
+            <h2>Incoming Requests</h2>
+            <p>Future: show WhatsApp order intents. (Placeholder)</p>
+        </div>
+        <div class="card">
+            <div class="muted">Settings</div>
+            <h2>Site Configuration</h2>
+            <p>Future: theme, branding toggle. (Placeholder)</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
