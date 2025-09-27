@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{fragments/layout :: layout('Products', ~{::section})}">
+<section>
+    <div class="panel fade-in" style="animation-delay:.05s">
+        <h2>Products</h2>
+        <p>Product management not implemented yet. This placeholder will become the product list (table / cards) once persistence is added.</p>
+        <div class="actions">
+            <button class="btn primary" disabled>Add Product</button>
+            <button class="btn outline" disabled>Bulk Upload</button>
+        </div>
+    </div>
+    <div class="panel fade-in" style="animation-delay:.15s">
+        <h2>Planned Features</h2>
+        <ul style="margin:.2rem 0 0 1.2rem;padding:0;font-size:.85rem;line-height:1.5;color:#4a636f;">
+            <li>Create / edit / archive products</li>
+            <li>Image upload & storage</li>
+            <li>Category assignment & filtering</li>
+            <li>Stock level & visibility toggle</li>
+            <li>Bulk CSV import</li>
+        </ul>
+    </div>
+</section>
+</html>

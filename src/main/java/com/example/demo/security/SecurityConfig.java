@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfig {
@@ -19,13 +20,13 @@ public class SecurityConfig {
     private String adminUsername;
 
     @Value("${admin.password:ChangeMe_!234}")
-    private String adminPassword; // Change this in application.properties for a fixed secret
+    private String adminPassword; // For production override via ENV: -Dadmin.password or SPRING_APPLICATION_JSON; never keep default
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login","/css/**","/style.css","/index.html","/about.html","/","/static/**","/images/**","/gift.jpg").permitAll()
+                .requestMatchers("/login","/error","/css/**","/style.css","/index.html","/about.html","/","/static/**","/images/**","/gift.jpg").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
@@ -35,7 +36,9 @@ public class SecurityConfig {
                 .permitAll()
             )
             .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login?logout").permitAll())
-            .csrf(csrf -> csrf.disable()); // disable for now (consider enabling later with tokens)
+            .csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            ); // CSRF enabled with cookie token
         return http.build();
     }
 

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title th:text="${status} + ' Error'">Error</title>
+  <link rel="stylesheet" th:href="@{/style.css}" />
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;display:flex;flex-direction:column;min-height:100vh;background:#0f2f24;color:#e8f7f0;}
+    .wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem;text-align:center;}
+  h1{margin:0 0 1rem;font-size:3rem;letter-spacing:1px;line-height:1.05;background:linear-gradient(90deg,#25d366,#128c7e);-webkit-background-clip:text;background-clip:text;color:transparent;}
+    .code{display:inline-block;background:#112f25;color:#25d366;border:1px solid #1b4d3d;padding:.35rem .65rem;border-radius:6px;font-weight:600;font-size:.8rem;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase;}
+    p{margin:0 0 1.25rem;line-height:1.55;color:#b4d3ca;}
+    .actions{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin-top:1.2rem;}
+    a.button{background:#25d366;color:#042417;text-decoration:none;padding:.75rem 1.15rem;border-radius:30px;font-weight:700;letter-spacing:.5px;box-shadow:0 4px 18px -6px rgba(0,0,0,.5);transition:.35s;}
+    a.button:hover{background:#1fb45a;color:#fff;transform:translateY(-3px);} 
+    .panel{margin-top:2.2rem;background:#143c2f;padding:1.4rem 1.3rem 1.6rem;border-radius:18px;border:1px solid #205f4b;text-align:left;}
+    .panel h2{margin:.2rem 0 1rem;font-size:1rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;color:#25d366;}
+    pre{overflow:auto;background:#0d241c;padding:1rem;border-radius:12px;font-size:.75rem;line-height:1.4;color:#daf3ea;}
+    .small{font-size:.7rem;letter-spacing:1px;text-transform:uppercase;color:#6aa892;margin-top:2rem;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="code" th:text="${status}">Error</div>
+    <h1 th:text="${error} ?: 'Unexpected Error'">Something Broke</h1>
+    <p th:text="${message} ?: 'An unexpected problem occurred. Please try again later.'">Default message</p>
+    <div class="actions">
+      <a class="button" th:href="@{/}">Home</a>
+      <a class="button" href="javascript:history.back()">Go Back</a>
+      <a class="button" th:if="${#httpServletRequest.remoteUser}" th:href="@{/admin}">Dashboard</a>
+    </div>
+    <div class="panel" th:if="${trace}">
+        <h2>Debug Trace (dev)</h2>
+        <pre th:text="${trace}"></pre>
+    </div>
+    <div class="small">Error Reference ID: <span th:text="${errorId}">N/A</span></div>
+  </div>
+</body>
+</html>

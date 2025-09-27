@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(pageTitle,content)">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title th:text="${pageTitle} ?: 'Admin Panel'">Admin Panel</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+<div class="admin-shell" th:with="uri=${#httpServletRequest != null ? #httpServletRequest.requestURI : ''}">
+    <aside class="sidebar">
+        <div class="brand">Admin</div>
+        <nav class="menu">
+            <a th:href="@{/admin}" th:classappend="${uri=='/admin'}? 'active'">Dashboard</a>
+            <a th:href="@{/admin/products}" th:classappend="${uri.startsWith('/admin/products')}? 'active'">Products</a>
+            <a th:href="@{/admin/categories}" th:classappend="${uri.startsWith('/admin/categories')}? 'active'">Categories</a>
+            <a href="#" class="disabled" title="Coming Soon">Orders</a>
+        </nav>
+        <div class="sidebar-footer">
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+    </aside>
+    <div class="main">
+        <header class="topbar">
+            <h1 class="page-title" th:text="${pageTitle}">Dashboard</h1>
+        </header>
+        <main class="content" th:insert="${content}"></main>
+        <footer class="admin-footer">&copy; <span th:text="${#dates.format(#dates.createNow(),'yyyy')}"></span> Admin Panel</footer>
+    </div>
+</div>
+</body>
+</html>

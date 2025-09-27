@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{fragments/layout :: layout('Categories', ~{::section})}">
+<section>
+    <div class="panel fade-in" style="animation-delay:.05s">
+        <h2>Categories</h2>
+        <p>Category management not implemented yet. This will become the category list and form area later.</p>
+        <div class="actions">
+            <button class="btn primary" disabled>Add Category</button>
+        </div>
+    </div>
+    <div class="panel fade-in" style="animation-delay:.15s">
+        <h2>Planned Features</h2>
+        <ul style="margin:.2rem 0 0 1.2rem;padding:0;font-size:.85rem;line-height:1.5;color:#4a636f;">
+            <li>Create / rename / archive categories</li>
+            <li>Assign products to categories</li>
+            <li>Reorder / sort priorities</li>
+            <li>Visibility toggle</li>
+        </ul>
+    </div>
+</section>
+</html>
