@@ -2,22 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{fragments/layout :: layout('Products', ~{::section})}">
 <section>
     <div class="panel fade-in" style="animation-delay:.05s">
-        <h2>Products</h2>
-        <p>Product management not implemented yet. This placeholder will become the product list (table / cards) once persistence is added.</p>
-        <div class="actions">
-            <button class="btn primary" disabled>Add Product</button>
-            <button class="btn outline" disabled>Bulk Upload</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+            <h2>Products</h2>
+            <a th:href="@{/admin/products/new}" class="btn primary">Add Product</a>
         </div>
-    </div>
-    <div class="panel fade-in" style="animation-delay:.15s">
-        <h2>Planned Features</h2>
-        <ul style="margin:.2rem 0 0 1.2rem;padding:0;font-size:.85rem;line-height:1.5;color:#4a636f;">
-            <li>Create / edit / archive products</li>
-            <li>Image upload & storage</li>
-            <li>Category assignment & filtering</li>
-            <li>Stock level & visibility toggle</li>
-            <li>Bulk CSV import</li>
-        </ul>
+        <div th:if="${#lists.isEmpty(products)}" class="text-center" style="padding:2rem;color:#666;">
+            <p>No products found. <a th:href="@{/admin/products/new}">Create your first product</a>.</p>
+        </div>
+        <div th:unless="${#lists.isEmpty(products)}" style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#f8f9fa;">
+                        <th style="padding:.75rem;text-align:left;border-bottom:2px solid #dee2e6;">Name</th>
+                        <th style="padding:.75rem;text-align:left;border-bottom:2px solid #dee2e6;">Category</th>
+                        <th style="padding:.75rem;text-align:right;border-bottom:2px solid #dee2e6;">Price</th>
+                        <th style="padding:.75rem;text-align:center;border-bottom:2px solid #dee2e6;">Stock</th>
+                        <th style="padding:.75rem;text-align:center;border-bottom:2px solid #dee2e6;">Status</th>
+                        <th style="padding:.75rem;text-align:center;border-bottom:2px solid #dee2e6;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${products}" style="border-bottom:1px solid #dee2e6;">
+                        <td style="padding:.75rem;" th:text="${product.name}">Product Name</td>
+                        <td style="padding:.75rem;" th:text="${product.category?.name ?: 'Uncategorized'}">Category</td>
+                        <td style="padding:.75rem;text-align:right;" th:text="'$' + ${product.price}">$0.00</td>
+                        <td style="padding:.75rem;text-align:center;" th:text="${product.stockQuantity}">0</td>
+                        <td style="padding:.75rem;text-align:center;">
+                            <span th:if="${product.active}" style="background:#25d366;color:#fff;padding:.25rem .5rem;border-radius:12px;font-size:.75rem;">Active</span>
+                            <span th:unless="${product.active}" style="background:#6c757d;color:#fff;padding:.25rem .5rem;border-radius:12px;font-size:.75rem;">Inactive</span>
+                        </td>
+                        <td style="padding:.75rem;text-align:center;">
+                            <a th:href="@{/admin/products/edit/{id}(id=${product.id})}" class="btn outline" style="margin-right:.25rem;">Edit</a>
+                            <form th:action="@{/admin/products/delete/{id}(id=${product.id})}" method="post" style="display:inline;" onsubmit="return confirm('Delete this product?');">
+                                <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <button type="submit" class="btn" style="background:#dc3545;border-color:#dc3545;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 </html>

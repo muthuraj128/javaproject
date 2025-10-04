@@ -2,20 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{fragments/layout :: layout('Categories', ~{::section})}">
 <section>
     <div class="panel fade-in" style="animation-delay:.05s">
-        <h2>Categories</h2>
-        <p>Category management not implemented yet. This will become the category list and form area later.</p>
-        <div class="actions">
-            <button class="btn primary" disabled>Add Category</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+            <h2>Categories</h2>
+            <a th:href="@{/admin/categories/new}" class="btn primary">Add Category</a>
         </div>
-    </div>
-    <div class="panel fade-in" style="animation-delay:.15s">
-        <h2>Planned Features</h2>
-        <ul style="margin:.2rem 0 0 1.2rem;padding:0;font-size:.85rem;line-height:1.5;color:#4a636f;">
-            <li>Create / rename / archive categories</li>
-            <li>Assign products to categories</li>
-            <li>Reorder / sort priorities</li>
-            <li>Visibility toggle</li>
-        </ul>
+        <div th:if="${#lists.isEmpty(categories)}" class="text-center" style="padding:2rem;color:#666;">
+            <p>No categories found. <a th:href="@{/admin/categories/new}">Create your first category</a>.</p>
+        </div>
+        <div th:unless="${#lists.isEmpty(categories)}" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));">
+            <div th:each="category : ${categories}" class="card" style="animation-delay:.1s;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                    <div>
+                        <h3 th:text="${category.name}" style="margin:0 0 .5rem;font-size:1.1rem;">Category Name</h3>
+                        <p th:text="${category.description}" style="margin:0 0 1rem;color:#666;font-size:.9rem;">Description</p>
+                        <div>
+                            <span th:if="${category.active}" style="background:#25d366;color:#fff;padding:.25rem .5rem;border-radius:12px;font-size:.75rem;">Active</span>
+                            <span th:unless="${category.active}" style="background:#6c757d;color:#fff;padding:.25rem .5rem;border-radius:12px;font-size:.75rem;">Inactive</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions" style="margin-top:1rem;">
+                    <a th:href="@{/admin/categories/edit/{id}(id=${category.id})}" class="btn outline">Edit</a>
+                    <form th:action="@{/admin/categories/delete/{id}(id=${category.id})}" method="post" style="display:inline;" onsubmit="return confirm('Delete this category?');">
+                        <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn" style="background:#dc3545;border-color:#dc3545;">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 </html>

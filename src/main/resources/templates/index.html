@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue Home</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <div class="brand">Customised Gifts</div>
+            <ul class="nav-links">
+                <li><a href="#products" class="active">Our Products</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="admin">Admin Panel</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="catalogue-only" id="products">
+        <h1 class="catalogue-title">Our Products</h1>
+        <ul class="catalog-grid" aria-label="Product list">
+            <li th:each="product : ${products}" class="catalog-card" th:data-product-id="${product.id}">
+                <div class="media">
+                    <img th:if="${product.imageUrl != null and product.imageUrl != ''}" 
+                         th:src="${product.imageUrl}" 
+                         th:alt="${product.name}" 
+                         loading="lazy">
+                    <img th:unless="${product.imageUrl != null and product.imageUrl != ''}" 
+                         src="gift.jpg" 
+                         th:alt="${product.name}" 
+                         loading="lazy">
+                </div>
+                <div class="info">
+                    <h2 class="name" th:text="${product.name}">Product Name</h2>
+                    <p class="desc" th:text="${product.description}">Product description</p>
+                    <span class="price" th:aria-label="|Price ${product.price} Rupees|" 
+                          th:text="|₹${#numbers.formatDecimal(product.price, 1, 2)}|">₹0</span>
+                    <a href="#" class="whatsapp-btn action" 
+                       th:aria-label="|Buy ${product.name} on WhatsApp|">Buy on WhatsApp</a>
+                </div>
+            </li>
+            
+            <!-- Show message if no products -->
+            <li th:if="${#lists.isEmpty(products)}" class="catalog-card no-products">
+                <div class="info" style="text-align: center; padding: 2rem;">
+                    <h2 class="name">No Products Available</h2>
+                    <p class="desc">Please check the admin panel to add products.</p>
+                    <a href="admin" class="whatsapp-btn action">Go to Admin Panel</a>
+                </div>
+            </li>
+        </ul>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 WhatsApp Business Catalogue</p>
+    </footer>
+</body>
+</html>

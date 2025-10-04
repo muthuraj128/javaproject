@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="|${product.name} - Our Store|">Product Detail</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/products.css}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top" aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/}">
+                <i class="fas fa-store me-2"></i>Our Store
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/products}">Products</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin}">Admin Panel</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/products}">Products</a></li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/categories/{id}/products(id=${product.category.id})}" 
+                       th:text="${product.category.name}">Category</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}">Product</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <!-- Product Image -->
+            <div class="col-lg-6 mb-4">
+                <div class="product-detail-image">
+                    <img th:if="${product.imageUrl != null and product.imageUrl != ''}" 
+                         th:src="${product.imageUrl}" 
+                         class="img-fluid rounded shadow" 
+                         th:alt="${product.name}">
+                    <div th:unless="${product.imageUrl != null and product.imageUrl != ''}" 
+                         class="product-placeholder-large d-flex align-items-center justify-content-center rounded shadow">
+                        <i class="fas fa-image fa-5x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-lg-6">
+                <div class="product-detail-info">
+                    <h1 class="product-title" th:text="${product.name}">Product Name</h1>
+                    
+                    <div class="product-category mb-3">
+                        <a th:href="@{/categories/{id}/products(id=${product.category.id})}" 
+                           class="badge bg-primary text-decoration-none fs-6"
+                           th:text="${product.category.name}">Category</a>
+                    </div>
+
+                    <div class="product-price mb-4">
+                        <h2 class="price-display text-success" 
+                            th:text="|$${#numbers.formatDecimal(product.price, 1, 2)}|">$0.00</h2>
+                    </div>
+
+                    <div class="product-description mb-4">
+                        <h5>Description</h5>
+                        <p class="lead" th:text="${product.description ?: 'No description available.'}">Product description</p>
+                    </div>
+
+                    <div class="product-stock mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-boxes me-2 text-primary"></i>
+                            <span class="fw-bold">Stock: </span>
+                            <span th:text="${product.stockQuantity}" class="ms-2">0</span>
+                            <span th:if="${product.stockQuantity > 0}" class="badge bg-success ms-2">In Stock</span>
+                            <span th:unless="${product.stockQuantity > 0}" class="badge bg-danger ms-2">Out of Stock</span>
+                        </div>
+                    </div>
+
+                    <div class="product-actions mb-4">
+                        <button class="btn btn-success btn-lg me-2" 
+                                th:disabled="${product.stockQuantity <= 0}">
+                            <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                        </button>
+                        <button class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-heart me-2"></i>Add to Wishlist
+                        </button>
+                    </div>
+
+                    <div class="product-meta">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar-plus me-1"></i>
+                                    Added: <span th:text="${#temporals.format(product.createdAt, 'MMM dd, yyyy')}">Date</span>
+                                </small>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted" th:if="${product.updatedAt != product.createdAt}">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    Updated: <span th:text="${#temporals.format(product.updatedAt, 'MMM dd, yyyy')}">Date</span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        <div th:if="${!#lists.isEmpty(relatedProducts)}" class="mt-5">
+            <h3 class="mb-4">Related Products</h3>
+            <div class="row g-4">
+                <div th:each="relatedProduct : ${relatedProducts}" class="col-md-6 col-lg-3">
+                    <div class="card product-card h-100 shadow-sm">
+                        <div class="product-image-container">
+                            <img th:if="${relatedProduct.imageUrl != null and relatedProduct.imageUrl != ''}" 
+                                 th:src="${relatedProduct.imageUrl}" 
+                                 class="card-img-top product-image" 
+                                 th:alt="${relatedProduct.name}">
+                            <div th:unless="${relatedProduct.imageUrl != null and relatedProduct.imageUrl != ''}" 
+                                 class="product-placeholder d-flex align-items-center justify-content-center bg-light">
+                                <i class="fas fa-image fa-2x text-muted"></i>
+                            </div>
+                            <div class="product-overlay">
+                                <a th:href="@{/products/{id}(id=${relatedProduct.id})}" 
+                                   class="btn btn-primary btn-sm">
+                                    <i class="fas fa-eye me-1"></i>View Details
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title" th:text="${relatedProduct.name}">Product Name</h6>
+                            <p class="card-text text-muted small flex-grow-1" 
+                               th:text="${#strings.abbreviate(relatedProduct.description, 50)}">Description...</p>
+                            
+                            <div class="product-info mt-auto">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="price h6 text-primary mb-0" 
+                                          th:text="|$${#numbers.formatDecimal(relatedProduct.price, 1, 2)}|">$0.00</span>
+                                    <a th:href="@{/products/{id}(id=${relatedProduct.id})}" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Products -->
+        <div class="mt-5 text-center">
+            <a th:href="@{/products}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to All Products
+            </a>
+            <a th:href="@{/categories/{id}/products(id=${product.category.id})}" 
+               class="btn btn-outline-primary ms-2">
+                <i class="fas fa-tags me-2"></i>More in <span th:text="${product.category.name}">Category</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-store me-2"></i>Our Store</h5>
+                    <p class="text-muted">Your trusted online shopping destination.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted">&copy; 2025 Our Store. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

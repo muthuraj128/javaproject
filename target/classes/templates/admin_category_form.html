@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{fragments/layout :: layout('Category Form', ~{::section})}">
+<section>
+    <div class="panel fade-in">
+        <h2 th:text="${category.id != null ? 'Edit Category' : 'Add Category'}">Category Form</h2>
+        <form th:action="@{/admin/categories/save}" th:object="${category}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            
+            <div class="form-grid">
+                <div class="field">
+                    <label for="name">Category Name *</label>
+                    <input type="text" id="name" th:field="*{name}" required />
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:#dc3545;font-size:.8rem;"></span>
+                </div>
+                
+                <div class="field">
+                    <label>
+                        <input type="checkbox" th:field="*{active}" /> Active
+                    </label>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label for="description">Description</label>
+                <textarea id="description" th:field="*{description}" rows="3"></textarea>
+            </div>
+            
+            <div class="actions" style="margin-top:1.5rem;">
+                <button type="submit" class="btn primary">Save Category</button>
+                <a th:href="@{/admin/categories}" class="btn outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+</html>

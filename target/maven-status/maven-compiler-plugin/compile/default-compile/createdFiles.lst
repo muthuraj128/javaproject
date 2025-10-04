@@ -1,0 +1,14 @@
+com\example\demo\DemoApplication.class
+com\example\demo\service\CategoryService.class
+com\example\demo\error\TestIntentionalException.class
+com\example\demo\repository\CategoryRepository.class
+com\example\demo\entity\Category.class
+com\example\demo\security\SecurityConfig.class
+com\example\demo\controller\AdminController.class
+com\example\demo\service\ProductService.class
+com\example\demo\controller\ProductController.class
+com\example\demo\controller\HomeController.class
+com\example\demo\config\DataInitializer.class
+com\example\demo\repository\ProductRepository.class
+com\example\demo\entity\Product.class
+com\example\demo\error\GlobalExceptionHandler.class

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{fragments/layout :: layout('Product Form', ~{::section})}">
+<section>
+    <div class="panel fade-in">
+        <h2 th:text="${product.id != null ? 'Edit Product' : 'Add Product'}">Product Form</h2>
+        <form th:action="@{/admin/products/save}" th:object="${product}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            
+            <div class="form-grid">
+                <div class="field">
+                    <label for="name">Product Name *</label>
+                    <input type="text" id="name" th:field="*{name}" required />
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:#dc3545;font-size:.8rem;"></span>
+                </div>
+                
+                <div class="field">
+                    <label for="category">Category</label>
+                    <select id="category" th:field="*{category}">
+                        <option value="">Select Category</option>
+                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Category</option>
+                    </select>
+                </div>
+                
+                <div class="field">
+                    <label for="price">Price *</label>
+                    <input type="number" id="price" th:field="*{price}" step="0.01" min="0" required />
+                    <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color:#dc3545;font-size:.8rem;"></span>
+                </div>
+                
+                <div class="field">
+                    <label for="stockQuantity">Stock Quantity</label>
+                    <input type="number" id="stockQuantity" th:field="*{stockQuantity}" min="0" />
+                </div>
+                
+                <div class="field">
+                    <label for="imageUrl">Image URL</label>
+                    <input type="url" id="imageUrl" th:field="*{imageUrl}" />
+                </div>
+                
+                <div class="field">
+                    <label>
+                        <input type="checkbox" th:field="*{active}" /> Active
+                    </label>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label for="description">Description</label>
+                <textarea id="description" th:field="*{description}" rows="4"></textarea>
+            </div>
+            
+            <div class="actions" style="margin-top:1.5rem;">
+                <button type="submit" class="btn primary">Save Product</button>
+                <a th:href="@{/admin/products}" class="btn outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+</html>

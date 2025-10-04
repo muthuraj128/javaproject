@@ -3,21 +3,23 @@
 <section>
     <div class="grid">
         <div class="card fade-in" style="animation-delay:.05s">
-            <span class="badge">Soon</span>
+            <span class="badge">Active</span>
             <h3>Products</h3>
-            <div class="metric">0 <span>items</span></div>
-            <p>Catalogue management placeholder.</p>
+            <div class="metric" th:text="${activeProductCount} ?: '0'">0 <span>active</span></div>
+            <p th:text="'Total: ' + (${productCount} ?: '0') + ' products in catalogue'">Catalogue management.</p>
             <div class="actions">
-                <a th:href="@{/admin/products}" class="btn primary">Open</a>
+                <a th:href="@{/admin/products}" class="btn primary">Manage</a>
+                <a th:href="@{/admin/products/new}" class="btn">Add New</a>
             </div>
         </div>
         <div class="card fade-in" style="animation-delay:.15s">
-            <span class="badge" style="background:#128c7e;color:#fff;">Planned</span>
-            <h3>Orders</h3>
-            <div class="metric">0 <span>pending</span></div>
-            <p>Future order / request tracking.</p>
+            <span class="badge" style="background:#128c7e;color:#fff;">Active</span>
+            <h3>Categories</h3>
+            <div class="metric" th:text="${activeCategoryCount} ?: '0'">0 <span>active</span></div>
+            <p th:text="'Total: ' + (${categoryCount} ?: '0') + ' categories available'">Category management.</p>
             <div class="actions">
-                <button class="btn outline" type="button" disabled>Coming Soon</button>
+                <a th:href="@{/admin/categories}" class="btn primary">Manage</a>
+                <a th:href="@{/admin/categories/new}" class="btn">Add New</a>
             </div>
         </div>
         <div class="card fade-in" style="animation-delay:.25s">
@@ -30,12 +32,13 @@
             </div>
         </div>
         <div class="card fade-in" style="animation-delay:.35s">
-            <span class="badge" style="background:#25d366;color:#07341f;">Info</span>
+            <span class="badge" style="background:#25d366;color:#07341f;">Database</span>
             <h3>System</h3>
-            <div class="metric">OK</div>
-            <p>Environment healthy. Basic panel active.</p>
+            <div class="metric">H2</div>
+            <p>In-memory database active. Check /h2-console for direct access.</p>
             <div class="actions">
                 <a href="/" target="_blank" class="btn">View Site</a>
+                <a href="/h2-console" target="_blank" class="btn outline">DB Console</a>
             </div>
         </div>
     </div>
