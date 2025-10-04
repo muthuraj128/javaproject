@@ -5,6 +5,7 @@ import com.example.demo.entity.Category;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,12 @@ public class HomeController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    
+    @Value("${whatsapp.business.number:+919876543210}")
+    private String whatsappBusinessNumber;
+    
+    @Value("${whatsapp.business.name:Customised Gifts Store}")
+    private String businessName;
 
     @Autowired
     public HomeController(ProductService productService, CategoryService categoryService) {
@@ -70,6 +77,10 @@ public class HomeController {
         // Get statistics for dashboard
         model.addAttribute("totalProducts", productService.countActive());
         model.addAttribute("totalCategories", categoryService.countActive());
+        
+        // Add WhatsApp configuration
+        model.addAttribute("whatsappNumber", whatsappBusinessNumber);
+        model.addAttribute("businessName", businessName);
 
         return "index";
     }
