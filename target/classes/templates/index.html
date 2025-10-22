@@ -12,10 +12,9 @@
         <div class="nav-inner">
             <div class="brand">Customised Gifts</div>
             <ul class="nav-links">
-                <li><a href="#products" class="active">Our Products</a></li>
+                <li><a th:href="@{/}" class="active">Our Products</a></li>
                 <li><a href="about.html">About Us</a></li>
-                <li><a href="#contact">Contact Us</a></li>
-                <li><a href="admin">Admin Panel</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
             </ul>
         </div>
     </nav>
@@ -39,14 +38,14 @@
                     <p class="desc" th:text="${product.description}">Product description</p>
                     <span class="price" th:aria-label="|Price ${product.price} Rupees|" 
                           th:text="|₹${#numbers.formatDecimal(product.price, 1, 2)}|">₹0</span>
-                    <a href="#" 
+                    <button type="button"
                        class="whatsapp-btn action" 
                        th:data-product-name="${product.name}"
                        th:data-product-price="${#numbers.formatDecimal(product.price, 1, 2)}"
                        th:data-product-description="${product.description}"
                        th:data-product-category="${product.category.name}"
                        th:aria-label="|Buy ${product.name} on WhatsApp|"
-                       onclick="openWhatsAppFromButton(this)">Buy on WhatsApp</a>
+                       onclick="openWhatsAppFromButton(this)">Buy on WhatsApp</button>
                 </div>
             </li>
             
@@ -105,12 +104,12 @@ Thank you! 😊`;
             
             // Try WhatsApp app first on all devices, then fallback to web
             // Try to open WhatsApp app first
-            window.location.href = whatsappAppUrl;
+            globalThis.location.href = whatsappAppUrl;
             
             // If the app doesn't open (not installed or doesn't respond), 
             // fallback to WhatsApp Web after a short delay
             setTimeout(() => {
-                window.open(whatsappWebUrl, '_blank');
+                globalThis.open(whatsappWebUrl, '_blank');
             }, 1500);
             
             // Track the click for analytics
@@ -128,7 +127,7 @@ Thank you! 😊`;
             if (savedPreference === 'desktop') {
                 openWhatsAppDesktop(desktopUrl, webUrl);
             } else if (savedPreference === 'web') {
-                window.open(webUrl, '_blank');
+                globalThis.open(webUrl, '_blank');
             } else {
                 // First time - ask user preference
                 showWhatsAppChoiceModal(desktopUrl, webUrl);
@@ -149,18 +148,18 @@ Thank you! 😊`;
                 openWhatsAppDesktop(desktopUrl, webUrl);
             } else {
                 localStorage.setItem('whatsapp-preference', 'web');
-                window.open(webUrl, '_blank');
+                globalThis.open(webUrl, '_blank');
             }
         }
         
         // Open WhatsApp Desktop with fallback
         function openWhatsAppDesktop(desktopUrl, webUrl) {
             // Try desktop app
-            window.location.href = desktopUrl;
+            globalThis.location.href = desktopUrl;
             
             // Fallback to web if desktop doesn't respond
             setTimeout(() => {
-                window.open(webUrl, '_blank');
+                globalThis.open(webUrl, '_blank');
             }, 2500);
         }
         
@@ -170,11 +169,11 @@ Thank you! 😊`;
             const webUrl = `https://web.whatsapp.com/send?phone=${BUSINESS_WHATSAPP}&text=${encodedMessage}`;
             
             // Try desktop first, then fallback to web
-            window.location.href = desktopUrl;
+            globalThis.location.href = desktopUrl;
             
             // Fallback timer for web version
             setTimeout(() => {
-                window.open(webUrl, '_blank');
+                globalThis.open(webUrl, '_blank');
             }, 2000);
         }
         
@@ -209,7 +208,7 @@ Thank you! 😊`;
         // Add visual feedback when buttons are clicked
         document.addEventListener('DOMContentLoaded', function() {
             const whatsappButtons = document.querySelectorAll('.whatsapp-btn');
-            whatsappButtons.forEach(button => {
+            for (const button of whatsappButtons) {
                 button.addEventListener('click', function() {
                     // Add clicked effect
                     this.style.transform = 'scale(0.95)';
@@ -217,10 +216,10 @@ Thank you! 😊`;
                         this.style.transform = 'scale(1)';
                     }, 150);
                 });
-            });
+            }
             
             // Add preference reset option (right-click on any WhatsApp button)
-            whatsappButtons.forEach(button => {
+            for (const button of whatsappButtons) {
                 button.addEventListener('contextmenu', function(e) {
                     e.preventDefault();
                     if (confirm('Reset WhatsApp preference? You\'ll be asked to choose again next time.')) {
@@ -228,7 +227,7 @@ Thank you! 😊`;
                         alert('WhatsApp preference reset! You\'ll be asked to choose on your next click.');
                     }
                 });
-            });
+            }
         });
         
         // Global function to reset WhatsApp preference (can be called from console)
