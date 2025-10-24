@@ -3,7 +3,13 @@
 <section>
     <div class="panel fade-in">
         <h2 th:text="${product.id != null ? 'Edit Product' : 'Add Product'}">Product Form</h2>
-        <form th:action="@{/admin/products/save}" th:object="${product}" method="post">
+        
+        <!-- Display error message if any -->
+        <div th:if="${error}" style="background:#fee;border:1px solid #dc3545;color:#dc3545;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+            <strong>Error:</strong> <span th:text="${error}"></span>
+        </div>
+        
+        <form th:action="@{/admin/products/save}" th:object="${product}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}" />
             <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             
@@ -33,9 +39,24 @@
                     <input type="number" id="stockQuantity" th:field="*{stockQuantity}" min="0" />
                 </div>
                 
-                <div class="field">
-                    <label for="imageUrl">Image URL</label>
-                    <input type="url" id="imageUrl" th:field="*{imageUrl}" />
+                <div class="field" style="grid-column: 1 / -1;">
+                    <label for="imageFile">Upload Product Image</label>
+                    <input type="file" id="imageFile" name="imageFile" accept="image/*" 
+                           onchange="previewImage(this)" style="padding:.5rem;border:2px dashed #ddd;border-radius:8px;" />
+                    <small style="color:#666;display:block;margin-top:.5rem;">Choose a product image (JPG, PNG, GIF, etc.)</small>
+                    
+                    <!-- Image Preview -->
+                    <div id="imagePreview" style="margin-top:1rem;">
+                        <img th:if="${product.imageUrl}" th:src="${product.imageUrl}" 
+                             alt="Current product image" id="previewImg"
+                             style="max-width:200px;max-height:200px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);" />
+                    </div>
+                </div>
+                
+                <div class="field" style="grid-column: 1 / -1;">
+                    <label for="imageUrl">Or Enter Image URL</label>
+                    <input type="url" id="imageUrl" th:field="*{imageUrl}" placeholder="https://example.com/image.jpg" />
+                    <small style="color:#666;display:block;margin-top:.5rem;">Alternatively, you can paste an image URL instead of uploading</small>
                 </div>
                 
                 <div class="field">
@@ -56,5 +77,30 @@
             </div>
         </form>
     </div>
+    
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('previewImg');
+            const previewContainer = document.getElementById('imagePreview');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    if (!preview) {
+                        const img = document.createElement('img');
+                        img.id = 'previewImg';
+                        img.style.cssText = 'max-width:200px;max-height:200px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);';
+                        previewContainer.appendChild(img);
+                        img.src = e.target.result;
+                    } else {
+                        preview.src = e.target.result;
+                    }
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </section>
 </html>

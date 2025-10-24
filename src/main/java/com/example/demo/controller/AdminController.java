@@ -5,11 +5,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.error.TestIntentionalException;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.Category;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.CategoryService;
+import com.example.demo.service.FileStorageService;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
 
@@ -21,6 +23,9 @@ public class AdminController {
     
     @Autowired
     private CategoryService categoryService;
+    
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @GetMapping("/admin")
     public String admin(Model model) {
@@ -61,11 +66,36 @@ public class AdminController {
     }
 
     @PostMapping("/admin/products/save")
-    public String saveProduct(@Valid @ModelAttribute Product product, BindingResult result, Model model) {
+    public String saveProduct(@Valid @ModelAttribute Product product, 
+                            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+                            BindingResult result, 
+                            Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoryService.findActiveCategories());
             return "admin_product_form";
         }
+        
+        // Handle file upload if provided
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                // Delete old image if updating product
+                if (product.getId() != null) {
+                    Product existingProduct = productService.findById(product.getId()).orElse(null);
+                    if (existingProduct != null && existingProduct.getImageUrl() != null) {
+                        fileStorageService.deleteFile(existingProduct.getImageUrl());
+                    }
+                }
+                
+                // Store new image
+                String imagePath = fileStorageService.storeFile(imageFile);
+                product.setImageUrl(imagePath);
+            } catch (Exception e) {
+                model.addAttribute("error", "Failed to upload image: " + e.getMessage());
+                model.addAttribute("categories", categoryService.findActiveCategories());
+                return "admin_product_form";
+            }
+        }
+        
         productService.save(product);
         return "redirect:/admin/products";
     }
